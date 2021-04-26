@@ -5,6 +5,7 @@ import com.challenge.jobsity.domain.Frame;
 import com.challenge.jobsity.domain.Player;
 import com.challenge.jobsity.domain.Shot;
 import com.challenge.jobsity.file.BowlingFileReader;
+import com.challenge.jobsity.validator.BowlingValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -21,10 +22,14 @@ import static java.util.Objects.nonNull;
 @Service
 @RequiredArgsConstructor
 public class BowlingService {
+  private final BowlingValidator bowlingValidator;
   private final BowlingFileReader bowlingFileReader;
 
   public BowlingBoard getBowlingBoard(String filePath) throws Exception {
     List<Shot> shots = bowlingFileReader.getShots(filePath);
+
+    bowlingValidator.validateShots(shots);
+
     Map<String, List<Shot>> shotsByPlayer =
         shots.stream().collect(Collectors.groupingBy(Shot::getName));
 

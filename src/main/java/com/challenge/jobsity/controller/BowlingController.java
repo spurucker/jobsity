@@ -30,7 +30,10 @@ public class BowlingController {
 
   private String getPrintableGame(BowlingBoard bowlingBoard) {
     StringBuilder stringBuilder = new StringBuilder();
-    stringBuilder.append(nameColumn(FRAME_ROW_NAME)).append(getFrameNumbers(ROUNDS_SIZE)).append('\n');
+    stringBuilder
+        .append(nameColumn(FRAME_ROW_NAME))
+        .append(getFrameNumbers(ROUNDS_SIZE))
+        .append('\n');
     bowlingBoard
         .getPlayers()
         .forEach(
@@ -43,11 +46,11 @@ public class BowlingController {
     return stringBuilder.toString();
   }
 
-  private String pinFallsRow(Player player){
+  private String pinFallsRow(Player player) {
     return nameColumn(PIN_FALLS_ROW_NAME) + allPinFalls(player.getFrames()) + '\n';
   }
 
-  private String scoreRow(Player player){
+  private String scoreRow(Player player) {
     return nameColumn(SCORE_ROW_NAME) + allScores(player.getFrames()) + '\n';
   }
 

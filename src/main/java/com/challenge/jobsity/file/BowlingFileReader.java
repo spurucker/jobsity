@@ -22,8 +22,8 @@ import static java.util.Arrays.asList;
 public class BowlingFileReader {
   private static final List<String> SCHEMA = asList(NAME, PIN_FALLS);
 
-  private final CsvDataLoaderService csvDataLoaderService;
   private final FileUtils fileUtils;
+  private final CsvDataLoaderService csvDataLoaderService;
 
   public List<Shot> getShots(String filePath) throws Exception {
     try {

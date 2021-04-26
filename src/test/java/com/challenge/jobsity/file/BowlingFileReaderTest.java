@@ -33,12 +33,12 @@ public class BowlingFileReaderTest {
 
   private BowlingFileReader bowlingFileReader;
 
-  @MockBean private CsvDataLoaderService csvDataLoaderService;
   @MockBean private FileUtils fileUtils;
+  @MockBean private CsvDataLoaderService csvDataLoaderService;
 
   @PostConstruct
   public void init() {
-    bowlingFileReader = new BowlingFileReader(csvDataLoaderService, fileUtils);
+    bowlingFileReader = new BowlingFileReader(fileUtils, csvDataLoaderService);
   }
 
   @Test
