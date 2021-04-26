@@ -11,7 +11,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import javax.annotation.PostConstruct;
 
 import static com.challenge.jobsity.ResourceReader.asString;
-import static com.challenge.jobsity.TestConstants.TEST_FILE_PATH;
+import static com.challenge.jobsity.TestConstants.TEST_SIMPLE_FILE_PATH;
 import static com.challenge.jobsity.fixture.BowlingBoardFixture.dummyBowlingBoard;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -36,9 +36,9 @@ public class BowlingControllerTest {
   public void getBowlingBoard() throws Exception {
     String expected = asString(expectedPrint);
 
-    when(bowlingService.getBowlingBoard(eq(TEST_FILE_PATH))).thenReturn(dummyBowlingBoard());
+    when(bowlingService.getBowlingBoard(eq(TEST_SIMPLE_FILE_PATH))).thenReturn(dummyBowlingBoard());
 
-    String got = bowlingController.getGameResult(TEST_FILE_PATH);
+    String got = bowlingController.getGameResult(TEST_SIMPLE_FILE_PATH);
 
     assertThat(got).isEqualToIgnoringNewLines(expected);
   }
@@ -46,9 +46,10 @@ public class BowlingControllerTest {
   @Test
   public void getBowlingBoardException() throws Exception {
     String errorMessage = "some error";
-    when(bowlingService.getBowlingBoard(eq(TEST_FILE_PATH))).thenThrow(new Exception(errorMessage));
+    when(bowlingService.getBowlingBoard(eq(TEST_SIMPLE_FILE_PATH)))
+        .thenThrow(new Exception(errorMessage));
 
-    assertThatThrownBy(() -> bowlingController.getGameResult(TEST_FILE_PATH))
+    assertThatThrownBy(() -> bowlingController.getGameResult(TEST_SIMPLE_FILE_PATH))
         .isInstanceOf(Exception.class)
         .hasMessage(errorMessage);
   }

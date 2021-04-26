@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
-import static com.challenge.jobsity.TestConstants.TEST_FILE_PATH;
+import static com.challenge.jobsity.TestConstants.TEST_SIMPLE_FILE_PATH;
 import static java.util.Arrays.asList;
 import static org.apache.commons.collections.ListUtils.unmodifiableList;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -20,7 +20,7 @@ public class CsvDataLoaderServiceTest {
   @Test
   public void loadInput() throws IOException {
     ClassLoader classLoader = ClassLoader.getSystemClassLoader();
-    InputStream inputStream = classLoader.getResourceAsStream(TEST_FILE_PATH);
+    InputStream inputStream = classLoader.getResourceAsStream(TEST_SIMPLE_FILE_PATH);
 
     List<Row> rowList = csvDataLoaderService.loadInput(inputStream, SCHEMA);
 

@@ -22,9 +22,17 @@ public class JobsityApplication implements CommandLineRunner {
   @Override
   public void run(String... args) {
     try {
+      validateArgs(args);
+
       System.out.println(bowlingController.getGameResult(args[0]));
     } catch (Exception e) {
       e.printStackTrace();
+    }
+  }
+
+  private void validateArgs(String... args) throws Exception {
+    if(args.length != 1){
+      throw new Exception("File path parameter is required. No other parameters are allowed");
     }
   }
 }
