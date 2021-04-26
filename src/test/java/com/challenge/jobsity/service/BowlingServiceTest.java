@@ -11,7 +11,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import javax.annotation.PostConstruct;
 
-import static com.challenge.jobsity.TestConstants.TEST_FILE_PATH;
+import static com.challenge.jobsity.TestConstants.TEST_SIMPLE_FILE_PATH;
 import static com.challenge.jobsity.fixture.BowlingBoardFixture.dummyBowlingBoard;
 import static com.challenge.jobsity.fixture.ShotFixture.dummySinglePlayerShots;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -36,13 +36,14 @@ public class BowlingServiceTest {
 
   @Test
   public void getBowlingBoard() throws Exception {
-    when(bowlingFileReader.getShots(eq(TEST_FILE_PATH))).thenReturn(dummySinglePlayerShots());
+    when(bowlingFileReader.getShots(eq(TEST_SIMPLE_FILE_PATH)))
+        .thenReturn(dummySinglePlayerShots());
 
-    BowlingBoard board = bowlingService.getBowlingBoard(TEST_FILE_PATH);
+    BowlingBoard board = bowlingService.getBowlingBoard(TEST_SIMPLE_FILE_PATH);
 
     assertThat(board).isEqualTo(dummyBowlingBoard());
 
-    verify(bowlingFileReader).getShots(eq(TEST_FILE_PATH));
+    verify(bowlingFileReader).getShots(eq(TEST_SIMPLE_FILE_PATH));
     verify(bowlingValidator).validateShots(eq(dummySinglePlayerShots()));
   }
 
@@ -50,29 +51,30 @@ public class BowlingServiceTest {
   public void getBowlingBoardValidationException() throws Exception {
     String errorMessage = "some error";
 
-    when(bowlingFileReader.getShots(eq(TEST_FILE_PATH))).thenReturn(dummySinglePlayerShots());
+    when(bowlingFileReader.getShots(eq(TEST_SIMPLE_FILE_PATH)))
+        .thenReturn(dummySinglePlayerShots());
     doThrow(new BowlingValidationException(errorMessage))
         .when(bowlingValidator)
         .validateShots(eq(dummySinglePlayerShots()));
 
-    assertThatThrownBy(() -> bowlingService.getBowlingBoard(TEST_FILE_PATH))
+    assertThatThrownBy(() -> bowlingService.getBowlingBoard(TEST_SIMPLE_FILE_PATH))
         .hasMessage(errorMessage)
         .isInstanceOf(BowlingValidationException.class);
 
-    verify(bowlingFileReader).getShots(eq(TEST_FILE_PATH));
+    verify(bowlingFileReader).getShots(eq(TEST_SIMPLE_FILE_PATH));
     verify(bowlingValidator).validateShots(eq(dummySinglePlayerShots()));
   }
 
   @Test
   public void getBowlingBoardReaderException() throws Exception {
     String errorMessage = "some error";
-    when(bowlingFileReader.getShots(TEST_FILE_PATH)).thenThrow(new Exception(errorMessage));
+    when(bowlingFileReader.getShots(TEST_SIMPLE_FILE_PATH)).thenThrow(new Exception(errorMessage));
 
-    assertThatThrownBy(() -> bowlingService.getBowlingBoard(TEST_FILE_PATH))
+    assertThatThrownBy(() -> bowlingService.getBowlingBoard(TEST_SIMPLE_FILE_PATH))
         .isInstanceOf(Exception.class)
         .hasMessage(errorMessage);
 
-    verify(bowlingFileReader).getShots(eq(TEST_FILE_PATH));
+    verify(bowlingFileReader).getShots(eq(TEST_SIMPLE_FILE_PATH));
     verify(bowlingValidator, never()).validateShots(eq(dummySinglePlayerShots()));
   }
 }

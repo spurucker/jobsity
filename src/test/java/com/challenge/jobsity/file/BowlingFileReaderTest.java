@@ -16,7 +16,7 @@ import java.util.List;
 
 import static com.challenge.jobsity.Constants.NAME;
 import static com.challenge.jobsity.Constants.PIN_FALLS;
-import static com.challenge.jobsity.TestConstants.TEST_FILE_PATH;
+import static com.challenge.jobsity.TestConstants.TEST_SIMPLE_FILE_PATH;
 import static com.challenge.jobsity.fixture.RowFixture.dummyFShotRow;
 import static com.challenge.jobsity.fixture.RowFixture.dummyIntegerShotRow;
 import static com.challenge.jobsity.fixture.RowFixture.dummyXShotRow;
@@ -47,9 +47,9 @@ public class BowlingFileReaderTest {
 
     when(csvDataLoaderService.loadInput(eq(inputStreamMock), eq(TEST_SCHEMA)))
         .thenReturn(dummyFShotRow());
-    when(fileUtils.createInputStream(eq(TEST_FILE_PATH))).thenReturn(inputStreamMock);
+    when(fileUtils.createInputStream(eq(TEST_SIMPLE_FILE_PATH))).thenReturn(inputStreamMock);
 
-    List<Shot> got = bowlingFileReader.getShots(TEST_FILE_PATH);
+    List<Shot> got = bowlingFileReader.getShots(TEST_SIMPLE_FILE_PATH);
 
     Shot expected = new Shot("Santiago", 0);
     assertThat(got).isEqualTo(asList(expected));
@@ -61,9 +61,9 @@ public class BowlingFileReaderTest {
 
     when(csvDataLoaderService.loadInput(eq(inputStreamMock), eq(TEST_SCHEMA)))
         .thenReturn(dummyXShotRow());
-    when(fileUtils.createInputStream(eq(TEST_FILE_PATH))).thenReturn(inputStreamMock);
+    when(fileUtils.createInputStream(eq(TEST_SIMPLE_FILE_PATH))).thenReturn(inputStreamMock);
 
-    List<Shot> got = bowlingFileReader.getShots(TEST_FILE_PATH);
+    List<Shot> got = bowlingFileReader.getShots(TEST_SIMPLE_FILE_PATH);
 
     Shot expected = new Shot("Santiago", 10);
     assertThat(got).isEqualTo(asList(expected));
@@ -75,9 +75,9 @@ public class BowlingFileReaderTest {
 
     when(csvDataLoaderService.loadInput(eq(inputStreamMock), eq(TEST_SCHEMA)))
         .thenReturn(dummyIntegerShotRow());
-    when(fileUtils.createInputStream(eq(TEST_FILE_PATH))).thenReturn(inputStreamMock);
+    when(fileUtils.createInputStream(eq(TEST_SIMPLE_FILE_PATH))).thenReturn(inputStreamMock);
 
-    List<Shot> got = bowlingFileReader.getShots(TEST_FILE_PATH);
+    List<Shot> got = bowlingFileReader.getShots(TEST_SIMPLE_FILE_PATH);
 
     Shot expected = new Shot("Santiago", 1);
     assertThat(got).isEqualTo(asList(expected));
@@ -85,11 +85,12 @@ public class BowlingFileReaderTest {
 
   @Test
   public void getShotsInvalidFilePathException() throws FileNotFoundException {
-    when(fileUtils.createInputStream(eq(TEST_FILE_PATH))).thenThrow(new FileNotFoundException());
+    when(fileUtils.createInputStream(eq(TEST_SIMPLE_FILE_PATH)))
+        .thenThrow(new FileNotFoundException());
 
-    assertThatThrownBy(() -> bowlingFileReader.getShots(TEST_FILE_PATH))
+    assertThatThrownBy(() -> bowlingFileReader.getShots(TEST_SIMPLE_FILE_PATH))
         .isInstanceOf(InvalidFilePathException.class)
-        .hasMessage("Could not find File in the path in: " + TEST_FILE_PATH);
+        .hasMessage("Could not find File in the path in: " + TEST_SIMPLE_FILE_PATH);
   }
 
   @Test
@@ -99,9 +100,9 @@ public class BowlingFileReaderTest {
     when(csvDataLoaderService.loadInput(eq(inputStreamMock), eq(TEST_SCHEMA)))
         .thenThrow(new IOException());
 
-    when(fileUtils.createInputStream(eq(TEST_FILE_PATH))).thenReturn(inputStreamMock);
+    when(fileUtils.createInputStream(eq(TEST_SIMPLE_FILE_PATH))).thenReturn(inputStreamMock);
 
-    assertThatThrownBy(() -> bowlingFileReader.getShots(TEST_FILE_PATH))
+    assertThatThrownBy(() -> bowlingFileReader.getShots(TEST_SIMPLE_FILE_PATH))
         .isInstanceOf(FileReadingException.class)
         .hasMessage("File could not be read");
   }
