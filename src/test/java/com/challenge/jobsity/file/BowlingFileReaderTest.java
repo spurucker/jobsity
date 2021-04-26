@@ -1,6 +1,7 @@
 package com.challenge.jobsity.file;
 
 import com.challenge.jobsity.domain.Shot;
+import com.challenge.jobsity.exception.BowlingValidationException;
 import com.challenge.jobsity.exception.FileReadingException;
 import com.challenge.jobsity.exception.InvalidFilePathException;
 import org.junit.jupiter.api.Test;
@@ -19,6 +20,7 @@ import static com.challenge.jobsity.Constants.PIN_FALLS;
 import static com.challenge.jobsity.TestConstants.TEST_SIMPLE_FILE_PATH;
 import static com.challenge.jobsity.fixture.RowFixture.dummyFShotRow;
 import static com.challenge.jobsity.fixture.RowFixture.dummyIntegerShotRow;
+import static com.challenge.jobsity.fixture.RowFixture.dummyInvalidPinFallsShotRow;
 import static com.challenge.jobsity.fixture.RowFixture.dummyXShotRow;
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -105,5 +107,18 @@ public class BowlingFileReaderTest {
     assertThatThrownBy(() -> bowlingFileReader.getShots(TEST_SIMPLE_FILE_PATH))
         .isInstanceOf(FileReadingException.class)
         .hasMessage("File could not be read");
+  }
+
+  @Test
+  public void getShotsNotValidPinFalls() throws IOException {
+    InputStream inputStreamMock = mock(InputStream.class);
+
+    when(csvDataLoaderService.loadInput(eq(inputStreamMock), eq(TEST_SCHEMA)))
+        .thenReturn(dummyInvalidPinFallsShotRow());
+    when(fileUtils.createInputStream(eq(TEST_SIMPLE_FILE_PATH))).thenReturn(inputStreamMock);
+
+    assertThatThrownBy(() -> bowlingFileReader.getShots(TEST_SIMPLE_FILE_PATH))
+        .isInstanceOf(BowlingValidationException.class)
+        .hasMessage("Pinfalls must be integers");
   }
 }

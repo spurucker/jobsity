@@ -1,9 +1,11 @@
 package com.challenge.jobsity.file;
 
 import com.challenge.jobsity.domain.Shot;
+import com.challenge.jobsity.exception.BowlingValidationException;
 import com.challenge.jobsity.exception.FileReadingException;
 import com.challenge.jobsity.exception.InvalidFilePathException;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.stereotype.Service;
 
 import java.io.FileNotFoundException;
@@ -32,8 +34,9 @@ public class BowlingFileReader {
       InputStream fileInputStream = fileUtils.createInputStream(filePath);
       List<Row> rows = csvDataLoaderService.loadInput(fileInputStream, SCHEMA);
 
-      rows.forEach(r -> shots.add(fromRowToPinFall(r)));
-
+      for (Row row : rows) {
+        shots.add(fromRowToPinFall(row));
+      }
       return shots;
     } catch (FileNotFoundException e) {
       throw new InvalidFilePathException("Could not find File in the path in: " + filePath);
@@ -42,18 +45,25 @@ public class BowlingFileReader {
     }
   }
 
-  private Shot fromRowToPinFall(Row row) {
+  private Shot fromRowToPinFall(Row row) throws BowlingValidationException {
     Integer pinFalls = pinFallsToInteger(row.get(PIN_FALLS));
     return new Shot(row.get(NAME), pinFalls);
   }
 
-  private Integer pinFallsToInteger(String pinFalls) {
+  private Integer pinFallsToInteger(String pinFalls) throws BowlingValidationException {
     if (pinFalls.equalsIgnoreCase("F")) {
       return 0;
     }
     if (pinFalls.equalsIgnoreCase("X")) {
       return PIN_SIZE;
     }
+    validateIsNumeric(pinFalls);
     return Integer.parseInt(pinFalls);
+  }
+
+  private void validateIsNumeric(String pinFalls) throws BowlingValidationException {
+    if (!NumberUtils.isCreatable(pinFalls)) {
+      throw new BowlingValidationException("Pinfalls must be integers");
+    }
   }
 }

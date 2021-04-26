@@ -31,4 +31,11 @@ public class RowFixture {
     rowValue.put(PIN_FALLS, "1");
     return asList(Row.builder().values(rowValue).build());
   }
+
+  public static List<Row> dummyInvalidPinFallsShotRow() {
+    Map<String, String> rowValue = new HashMap<>();
+    rowValue.put(NAME, "Santiago");
+    rowValue.put(PIN_FALLS, "Z");
+    return asList(Row.builder().values(rowValue).build());
+  }
 }

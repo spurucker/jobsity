@@ -9,4 +9,5 @@ This is an Application for Jobsity Challenge that serves to read a file with pla
 
 
 ## Notes
-It was required that the output would be separated by tabs. I changed this for fixed strings that would fill the empty spaces with '-'. This change was made as it was more clear to understand the result. If required I can change them for tabs.    
+- Code is formatted using Google Java Format standard.
+- It was required that the output would be separated by tabs. I changed this for fixed strings that would fill the empty spaces with '-'. This change was made as it was more clear to understand the result. If required I can change them for tabs.    
