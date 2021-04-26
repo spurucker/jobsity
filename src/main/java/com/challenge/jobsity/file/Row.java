@@ -8,13 +8,13 @@ import java.util.Map;
 @Data
 @Builder
 public class Row {
-    private Map<String, String> row;
+  private Map<String, String> values;
 
-    public void put(String key,String value){
-        this.row.put(key,value);
-    }
+  public void put(String key, String value) {
+    this.values.put(key, value);
+  }
 
-    public String get(String key){
-        return this.row.get(key);
-    }
+  public String get(String key) {
+    return this.values.get(key);
+  }
 }
