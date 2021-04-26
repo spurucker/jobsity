@@ -5,13 +5,11 @@ import com.opencsv.CSVParserBuilder;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -21,29 +19,21 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 @Service
 @AllArgsConstructor
 public class CsvDataLoaderService {
-  @Value("${file.delimiter}")
-  private final char delimiter;
-
-  @Value("${file.charset}")
-  private final Charset initCharSet;
-
-  @Value("${file.escape.char}")
-  private final char escapeChar;
-
-  @Value("${file.quote.char}")
-  private final char quoteChar;
+  private static final char DELIMITER = '\t';
+  private static final char SCAPE_CHAR = '\"';
+  private static final char QUOTE_CHAR = '|';
 
   public List<Row> loadInput(InputStream inputStream, List<String> schema) throws IOException {
     CSVParser parser =
         new CSVParserBuilder()
-            .withSeparator(delimiter)
-            .withEscapeChar(escapeChar)
-            .withQuoteChar(quoteChar)
+            .withSeparator(DELIMITER)
+            .withEscapeChar(SCAPE_CHAR)
+            .withQuoteChar(QUOTE_CHAR)
             .withIgnoreQuotations(true)
             .build();
 
     CSVReader reader =
-        new CSVReaderBuilder(new InputStreamReader(inputStream, initCharSet))
+        new CSVReaderBuilder(new InputStreamReader(inputStream, UTF_8))
             .withCSVParser(parser)
             .build();
 
