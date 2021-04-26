@@ -1,9 +1,8 @@
-# Getting Started
+# Jobsity - Challenge
+This is an Application for Jobsity Challenge that serves to read a file with players rolls and then calculate and show the result of the game 
 
-### Reference Documentation
-For further reference, please consider the following sections:
-
-* [Official Apache Maven documentation](https://maven.apache.org/guides/index.html)
-* [Spring Boot Maven Plugin Reference Guide](https://docs.spring.io/spring-boot/docs/2.4.5/maven-plugin/reference/html/)
-* [Create an OCI image](https://docs.spring.io/spring-boot/docs/2.4.5/maven-plugin/reference/html/#build-image)
-
+## Running the project
+- Compile project with: mvn clean install
+- Run the jar file: java -jar 1.0.0-BowlingGame.jar <FILE_PATH>
+- The File Path parameter is required to execute the program. It can be full path or relative path (in this case file must be in the same folder to work).
+- The file input.txt is added in the repository to use as an example. In test/resources can be found more examples.   
